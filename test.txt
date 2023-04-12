@@ -1,0 +1,5 @@
+
+./element.sh 1, ./element.sh H, or ./element.sh Hydrogen
+
+pg_dump -cC --inserts -U freecodecamp periodic_table > periodic_table.sql
+

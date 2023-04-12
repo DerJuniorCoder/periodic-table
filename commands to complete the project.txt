@@ -1,0 +1,74 @@
+Part 1 - Fix database
+
+ALTER TABLE properties RENAME COLUMN weight TO atomic_mass;
+ALTER TABLE properties RENAME COLUMN melting_point TO melting_point_celsius;
+ALTER TABLE properties RENAME COLUMN boiling_point TO boiling_point_celsius;
+ALTER TABLE properties ALTER COLUMN melting_point_celsius SET NOT NULL;
+ALTER TABLE properties ALTER COLUMN boiling_point_celsius SET NOT NULL;
+ALTER TABLE elements ADD UNIQUE(symbol);
+ALTER TABLE elements ADD UNIQUE(name);
+ALTER TABLE elements ALTER COLUMN symbol SET NOT NULL;
+ALTER TABLE elements ALTER COLUMN name SET NOT NULL;
+ALTER TABLE properties ADD FOREIGN KEY(atomic_number) REFERENCES elements(atomic_number);
+CREATE TABLE types(
+type_id INT PRIMARY KEY,
+type VARCHAR NOT NULL
+);
+INSERT INTO types(type_id, type) VALUES(1, 'metal'),(2, 'nonmetal'),(3, 'metalloid');
+TRUNCATE properties;
+ALTER TABLE properties ADD COLUMN type_id INT NOT NULL REFERENCES types(type_id);
+INSERT INTO properties(atomic_number, type, atomic_mass, melting_point_celsius, boiling_point_celsius, type_id) VALUES(1, 'nonmetal', 1.008000, -259.1, -252.9, 2),
+(2, 'nonmetal', 4.002600, -272.2, -269, 2),
+(3, 'metal', 6.940000, 180.54, 1342, 1),
+(4, 'metal', 9.012200, 1287, 2470, 1),
+(5, 'metalloid', 10.810000, 2075, 4000, 3),
+(6, 'nonmetal', 12.011000, 3550 , 4027, 2),
+(7, 'nonmetal', 14.007000, -210.1, -195.8, 2),
+(8, 'nonmetal', 15.999000, -218, -183, 2),
+(1000, 'metalloid', 1.000000, 10, 100, 3);
+UPDATE elements SET symbol='He' WHERE atomic_number=2;
+UPDATE elements SET symbol='Li' WHERE atomic_number=3;
+UPDATE elements SET symbol='MT' WHERE atomic_number=1000;
+ALTER TABLE properties ALTER COLUMN atomic_mass TYPE DECIMAL;
+UPDATE properties SET atomic_mass=1.008 WHERE atomic_number=1;
+UPDATE properties SET atomic_mass=4.0026 WHERE atomic_number=2;
+UPDATE properties SET atomic_mass=6.94 WHERE atomic_number=3;
+UPDATE properties SET atomic_mass=9.0122 WHERE atomic_number=4;
+UPDATE properties SET atomic_mass=10.81 WHERE atomic_number=5;
+UPDATE properties SET atomic_mass=12.011 WHERE atomic_number=6;
+UPDATE properties SET atomic_mass=14.007 WHERE atomic_number=7;
+UPDATE properties SET atomic_mass=15.999 WHERE atomic_number=8;
+UPDATE properties SET atomic_mass=1 WHERE atomic_number=1000;
+INSERT INTO elements(atomic_number, symbol, name) VALUES(9, 'F', 'Fluorine');
+INSERT INTO properties(atomic_number, type, atomic_mass, melting_point_celsius, boiling_point_celsius, type_id) VALUES(9, 'nonmetal', 18.998, -220, -188.1, 2);
+INSERT INTO elements(atomic_number, symbol, name) VALUES(10, 'Ne', 'Neon');
+INSERT INTO properties(atomic_number, type, atomic_mass, melting_point_celsius, boiling_point_celsius, type_id) VALUES(10, 'nonmetal', 20.18, -248.6, -246.1, 2);
+DELETE FROM properties WHERE atomic_number=1000;
+DELETE FROM elements WHERE atomic_number=1000;
+ALTER TABLE properties DROP COLUMN type;
+
+Part 2 - GIT
+
+mkdir periodic_table
+cd periodic_table
+git init
+
+git checkout -b main
+touch element.sh
+
+Initial commit
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
